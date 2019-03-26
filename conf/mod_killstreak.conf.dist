@@ -1,0 +1,8 @@
+[worldserver]
+
+#
+# Minim ammount to make a player be on a KillStreak
+# default: 10
+#
+
+KillStreak.MinAmount = 10
