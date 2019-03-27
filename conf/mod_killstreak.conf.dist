@@ -17,7 +17,7 @@ KillStreak.PVPToken = 29434
 #
 # Send the killstreak announce globally or on the specific zone of the killer
 # default: True  ( Global )
-#		   False (  Zone  )
+#          False (  Zone  )
 #
 
-KillStreak.PVPToken = 29434
+KillStreak.AnnounceGlobal = true
