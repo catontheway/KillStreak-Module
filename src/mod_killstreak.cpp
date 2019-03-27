@@ -12,7 +12,7 @@ uint32 conf_PVPToken = 0;
 bool conf_AnnounceType = 0;
 
 /* CLASS COLORS */
-std::string world_chat_ClassColor[11] =
+std::string kill_streak_ClassColor[11] =
 {
     "|cffC79C6E", // WARRIOR
     "|cffF58CBA", // PALADIN
@@ -102,23 +102,23 @@ public:
             pKiller->AddItem(conf_PVPToken, KillingStreak[killerGUID].KillStreak);
             switch (KillingStreak[killerGUID].KillStreak / conf_minAmmount) {
             case 1:
-                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is on a |cff00FF96Killing Spree|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is on a |cff00FF96Killing Spree|r!", kill_streak_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), kill_streak_ClassColor[pVictim->getClass() - 1].c_str());
                 SendKillStreakMessage(pKiller, msg);
                 break;
             case 2:
-                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffA330C9Dominating|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffA330C9Dominating|r!", kill_streak_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), kill_streak_ClassColor[pVictim->getClass() - 1].c_str());
                 SendKillStreakMessage(pKiller, msg);
                 break;
             case 3:
-                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffFF7D0AUnstoppable|r.", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffFF7D0AUnstoppable|r.", kill_streak_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), kill_streak_ClassColor[pVictim->getClass() - 1].c_str());
                 SendKillStreakMessage(pKiller, msg);
                 break;
             case 4:
-                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cff40C7EBGODLIKE MODE ENABLED|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cff40C7EBGODLIKE MODE ENABLED|r!", kill_streak_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), kill_streak_ClassColor[pVictim->getClass() - 1].c_str());
                 SendKillStreakMessage(pKiller, msg);
                 break;
             case 5:
-                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cffCC0000SOMEBODY STOP HIM|r!.", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cffCC0000SOMEBODY STOP HIM|r!.", kill_streak_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), kill_streak_ClassColor[pVictim->getClass() - 1].c_str());
                 SendKillStreakMessage(pKiller, msg);
                 break;
             }
