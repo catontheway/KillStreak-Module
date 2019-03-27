@@ -59,17 +59,21 @@ public:
             KillingStreak[killerGUID].LastGUIDKill = 0;
         }
         if(KillingStreak[killerGUID].LastGUIDKill == victimGUID) {
-            return;
+            //return;
         }
         KillingStreak[killerGUID].KillStreak++;
         KillingStreak[victimGUID].KillStreak = 0;
         KillingStreak[killerGUID].LastGUIDKill = victimGUID;
         KillingStreak[victimGUID].LastGUIDKill = 0;
         KillingStreak[victimGUID].LastKillTime = 0;
+
+        if (KillingStreak[killerGUID].KillStreak % 10 == 0)
+            pKiller->AddItem(701003, KillingStreak[killerGUID].KillStreak);
+
         if(KillingStreak[killerGUID].KillStreak >= sConfigMgr->GetIntDefault("KillStreak.MinAmount", 10)) {
-            char msg[500];
-            sprintf(msg, "|cffCC0000[PvP System]|r %s killed %s and is on a %u kill streak. ", pKiller->GetName().c_str(), pVictim->GetName().c_str(), KillingStreak[killerGUID].KillStreak);
-            sWorld->SendWorldText(LANG_UNIVERSAL, msg);
+            char msg[1000];
+            sprintf(msg, "|cffCC0000[PVP System]|r %s killed %s and is on a %u KILLSTREAK. ", pKiller->GetName().c_str(), pVictim->GetName().c_str(), KillingStreak[killerGUID].KillStreak);
+            sWorld->SendGlobalText(msg, NULL);
         }
     }
 };
