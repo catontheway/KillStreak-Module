@@ -6,6 +6,27 @@
 #include "Config.h"
 #include <unordered_map>
 
+
+uint32 conf_minAmmount = 0;
+uint32 conf_PVPToken = 0;
+bool conf_AnnounceType = 0;
+
+/* CLASS COLORS */
+std::string world_chat_ClassColor[11] =
+{
+    "|cffC79C6E", // WARRIOR
+    "|cffF58CBA", // PALADIN
+    "|cffABD473", // HUNTER
+    "|cffFFF569", // ROGUE
+    "|cffFFFFFF", // PRIEST
+    "|cffC41F3B", // DEATHKNIGHT
+    "|cff0070DE", // SHAMAN
+    "|cff40C7EB", // MAGE
+    "|cff8787ED", // WARLOCK
+    "", // ADDED IN MOP FOR MONK - NOT USED
+    "|cffFF7D0A", // DRUID
+};
+
 struct SystemInfo
 {
     uint32 KillStreak = 0;
@@ -27,7 +48,9 @@ public: MODKillStreak_Config() : WorldScript("MODKillStreak_Config") { };
 
             sConfigMgr->LoadMore(cfg_file_2.c_str());
             sConfigMgr->LoadMore(cfg_file.c_str());
-
+            conf_minAmmount = sConfigMgr->GetIntDefault("KillStreak.MinAmount", 10);
+            conf_PVPToken = sConfigMgr->GetIntDefault("KillStreak.PVPToken", 29434);
+            conf_AnnounceType = sConfigMgr->GetBoolDefault("KillStreak.AnnounceGlobal", true);
         }
     }
 };
@@ -37,6 +60,12 @@ public:
 
     MODKillStreak() : PlayerScript("MODKillStreak") { }
 
+    void SendKillStreakMessage(Player* pKiller, char* msg) {
+        if(conf_AnnounceType)
+            sWorld->SendGlobalText(msg, NULL);
+        else
+            sWorld->SendZoneText(pKiller->GetZoneId(), msg, NULL, TEAM_NEUTRAL);
+    }
 
     void OnPVPKill(Player *pKiller, Player *pVictim)
     {
@@ -67,13 +96,32 @@ public:
         KillingStreak[victimGUID].LastGUIDKill = 0;
         KillingStreak[victimGUID].LastKillTime = 0;
 
-        if (KillingStreak[killerGUID].KillStreak % 10 == 0)
-            pKiller->AddItem(701003, KillingStreak[killerGUID].KillStreak);
+        char msg[1000];
 
-        if(KillingStreak[killerGUID].KillStreak >= sConfigMgr->GetIntDefault("KillStreak.MinAmount", 10)) {
-            char msg[1000];
-            sprintf(msg, "|cffCC0000[PVP System]|r %s killed %s and is on a %u KILLSTREAK. ", pKiller->GetName().c_str(), pVictim->GetName().c_str(), KillingStreak[killerGUID].KillStreak);
-            sWorld->SendGlobalText(msg, NULL);
+        if (KillingStreak[killerGUID].KillStreak % conf_minAmmount == 0) {
+            pKiller->AddItem(conf_PVPToken, KillingStreak[killerGUID].KillStreak);
+            switch (KillingStreak[killerGUID].KillStreak / conf_minAmmount) {
+            case 1:
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is on a |cff00FF96Killing Spree|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                SendKillStreakMessage(pKiller, msg);
+                break;
+            case 2:
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffA330C9Dominating|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                SendKillStreakMessage(pKiller, msg);
+                break;
+            case 3:
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r and is |cffFF7D0AUnstoppable|r.", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                SendKillStreakMessage(pKiller, msg);
+                break;
+            case 4:
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cff40C7EBGODLIKE MODE ENABLED|r!", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                SendKillStreakMessage(pKiller, msg);
+                break;
+            case 5:
+                sprintf(msg, "|cffFF0000[PVP System]|r %s%s|r killed %s%s|r. |cffCC0000SOMEBODY STOP HIM|r!.", world_chat_ClassColor[pKiller->getClass() - 1].c_str(), pKiller->GetName().c_str(), pVictim->GetName().c_str(), world_chat_ClassColor[pVictim->getClass() - 1].c_str());
+                SendKillStreakMessage(pKiller, msg);
+                break;
+            }
         }
     }
 };
@@ -82,4 +130,3 @@ void AddKillStreakScripts() {
     new MODKillStreak_Config();
     new MODKillStreak();
 }
-
